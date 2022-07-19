@@ -8,7 +8,10 @@ from rest_framework import generics
 
 from .serializers import ProductSerializer
 from .models import Product,Category,Tag,Images
-from store import serializers
+from .serializers import ProductSerializer
+
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 # Create your views here.
 
@@ -24,30 +27,36 @@ class AddProduct(generics.CreateAPIView):
     def create(self,request):
         data = request.data
 
-        product = Product(name=data['name'],description=data['description'],actualPrice=data['actualPrice'],discountedPrice=data['discountedPrice'],quantity=data['quantity'],countryOfOrigin=data['countryOfOrigin'],color=data['color'])
-        product.save()
-        for category in data['categories'].split(','):
-            try:
-                # catg = Category.objects.get(name=category['name'])
-                catg = Category.objects.get(name=category)
-            except:
-                catg = Category.objects.create(name=category)
-                # catg = Category.objects.create(name=category['name'])
-            product.categories.add(catg)
+        # product = Product(name=data['name'],description=data['description'],actualPrice=data['actualPrice'],discountedPrice=data['discountedPrice'],quantity=data['quantity'],countryOfOrigin=data['countryOfOrigin'],color=data['color'])
+        # product.save()
+        # for category in data['categories'].split(','):
+        #     try:
+        #         # catg = Category.objects.get(name=category['name'])
+        #         catg = Category.objects.get(name=category)
+        #     except:
+        #         catg = Category.objects.create(name=category)
+        #         # catg = Category.objects.create(name=category['name'])
+        #     product.categories.add(catg)
         
-        for tag in data['tags'].split(','):
-            try:
-                t = Tag.objects.get(name=tag)
-            except:
-                t = Tag.objects.create(name=tag)
-            product.tags.add(t)
+        # for tag in data['tags'].split(','):
+        #     try:
+        #         t = Tag.objects.get(name=tag)
+        #     except:
+        #         t = Tag.objects.create(name=tag)
+        #     product.tags.add(t)
         
-        for img in data['prodImages']:
+        for img in request.FILES['prodImages']:
             # try:
             #     i = Images.objects.get(name=img['prodImages'])
             # except:
-            i = Images.objects.create(img=img['prodImages'])
-            product.prodImages.add(i)
+            # i = Images()
+            # i.save()
+            # i.img = img
+            # img_name = img.name
+            ...
+        FileSystemStorage(settings.MEDIA_ROOT+'/uploads').save(request.FILES['prodImages'].name,request.FILES['prodImages'])
+        # print(request.FILES['prodImages'])
+            # product.prodImages.add(i)
             # print(img)
 
         # serializer = ProductSerializer(product)
