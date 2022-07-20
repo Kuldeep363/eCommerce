@@ -24,18 +24,48 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProductSerializer(serializers.ModelSerializer):
-    # categories = serializers.SerializerMethodField()
-    # tags = serializers.SerializerMethodField()
-    # prodImages =  serializers.SerializerMethodField()
-    categories = CategorySerializer(many=True)
-    tags = TagSerializer(many=True)
-    prodImages =  ImageSerializer(many=True)
 
     class Meta:
         model = Product
         fields = '__all__'
+        depth = 1
 
     
+
+    def create(self,validated_data):
+        images = self.context['images']
+        categories = self.context['categories'][0].split(',')
+        tags = self.context['tags'][0].split(',')
+        print(f'c:{categories}')
+        print(f't:{tags}')
+        print(validated_data)
+        print(f'i:{images}')
+
+        # return 1
+        product = Product(**validated_data)
+        product.save()
+        product.slug += str(product.id)
+        for category in categories:
+            try:
+                catg = Category.objects.get(name=category)
+            except:
+                catg = Category.objects.create(name=category)
+            product.categories.add(catg)
+        
+        for tag in tags:
+            try:
+                t = Tag.objects.get(name=tag)
+            except:
+                t = Tag.objects.create(name=tag)
+            product.tags.add(t)
+
+        for img in images:
+            imgObject = Images.objects.create(img = img)
+            imgObject.slug += str(imgObject.id)
+            product.prodImages.add(imgObject)
+        
+        return product
+
 
 
 

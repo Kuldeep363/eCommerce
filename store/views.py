@@ -1,6 +1,8 @@
+from multiprocessing import context
 from turtle import color
 from unicodedata import name
 from django.shortcuts import render
+from numpy import product
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -12,6 +14,8 @@ from .serializers import ProductSerializer
 
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+
+from PIL import Image
 
 # Create your views here.
 
@@ -26,51 +30,41 @@ class AddProduct(generics.CreateAPIView):
 
     def create(self,request):
         data = request.data
+        prodImages = data.pop('prodImages')
+        categories = data.pop('categories')
+        tags = data.pop('tags')
+        print(data)
 
-        # product = Product(name=data['name'],description=data['description'],actualPrice=data['actualPrice'],discountedPrice=data['discountedPrice'],quantity=data['quantity'],countryOfOrigin=data['countryOfOrigin'],color=data['color'])
-        # product.save()
-        # for category in data['categories'].split(','):
-        #     try:
-        #         # catg = Category.objects.get(name=category['name'])
-        #         catg = Category.objects.get(name=category)
-        #     except:
-        #         catg = Category.objects.create(name=category)
-        #         # catg = Category.objects.create(name=category['name'])
-        #     product.categories.add(catg)
-        
-        # for tag in data['tags'].split(','):
-        #     try:
-        #         t = Tag.objects.get(name=tag)
-        #     except:
-        #         t = Tag.objects.create(name=tag)
-        #     product.tags.add(t)
-        
-        for img in request.FILES['prodImages']:
-            # try:
-            #     i = Images.objects.get(name=img['prodImages'])
-            # except:
-            # i = Images()
-            # i.save()
-            # i.img = img
-            # img_name = img.name
-            ...
-        FileSystemStorage(settings.MEDIA_ROOT+'/uploads').save(request.FILES['prodImages'].name,request.FILES['prodImages'])
-        # print(request.FILES['prodImages'])
-            # product.prodImages.add(i)
-            # print(img)
+        serializer = self.serializer_class(data=data, context={"images":prodImages,"categories":categories,"tags":tags})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
 
-        # serializer = ProductSerializer(product)
-        return Response({'msg':'done'})
-        # return Response(serializer.data)
-
-# @api_view(['GET'])
-# def getProductDetails(request,product_slug):
-#     product = Product.objects.get(slug = product_slug)
-#     serializer = ProductSerializer(product)
-#     return Response(serializer.data)
 
 
 class GetProductDetails(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     lookup_field = 'slug'
     serializer_class = ProductSerializer
+
+
+class UpdateProduct(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = "product_id"
+
+class DeleteProduct(generics.DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = 'product_id'
+
+    # def destroy(self,request,*args,**kwargs):
+    #     print('*******************')
+    #     id = kwargs['product_id']
+    #     product = Product.objects.get(id=id)
+    #     for img in product.prodImages.all():
+    #         product.prodImages.remove(img.id)
+
+    #     return Response({'msg':1})
