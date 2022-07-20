@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from pickle import TRUE
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -13,9 +14,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=-9!d$9xcep46j7)%#+hgrjp773)e2vban*80=i)j2vf-c*qfz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','https://kuldeeprawat.pythonanywhere.com']
 
 
 # Application definition
@@ -30,9 +33,11 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'store',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,3 +125,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CORS_ORIGIN_ALLOW_ALL = True
