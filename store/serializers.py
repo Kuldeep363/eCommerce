@@ -44,7 +44,6 @@ class ProductSerializer(serializers.ModelSerializer):
         # return 1
         product = Product(**validated_data)
         product.save()
-        product.slug += str(product.id)
         for category in categories:
             try:
                 catg = Category.objects.get(name=category)

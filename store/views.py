@@ -60,11 +60,7 @@ class DeleteProduct(generics.DestroyAPIView):
     serializer_class = ProductSerializer
     lookup_url_kwarg = 'product_id'
 
-    # def destroy(self,request,*args,**kwargs):
-    #     print('*******************')
-    #     id = kwargs['product_id']
-    #     product = Product.objects.get(id=id)
-    #     for img in product.prodImages.all():
-    #         product.prodImages.remove(img.id)
 
-    #     return Response({'msg':1})
+class RetrieveProducts(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
