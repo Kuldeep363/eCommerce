@@ -1,7 +1,3 @@
-from math import prod
-from pyexpat import model
-from unicodedata import category
-from attr import fields
 from rest_framework import serializers
 from .models import Category,Tag,Images,Product
 

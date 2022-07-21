@@ -1,3 +1,4 @@
+from distutils.log import error
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import generics
@@ -28,13 +29,17 @@ class AddProduct(generics.CreateAPIView):
         
         # extracting categories
         try:
-            categories = data.pop('categories')                 
+            categories = data.pop('categories')   
+            if categories == "":
+                raise error              
         except:
             categories = None
         
         # extracting tags, so that we can create product object easily and also can add these fields with product later
         try:
-            tags = data.pop('tags')                 
+            tags = data.pop('tags')        
+            if tags == "":
+                raise error         
         except:
             tags = None
         
