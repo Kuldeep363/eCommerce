@@ -19,10 +19,27 @@ class AddProduct(generics.CreateAPIView):
 
     # overriding create method
     def create(self,request):
-        data = request.data                                 #collecting data from api request
-        prodImages = data.pop('prodImages')                 #extracting images
-        categories = data.pop('categories')                 #extracting categories
-        tags = data.pop('tags')                             #extracting tags, so that we can create product object easily and also can add these fields with product later
+        data = request.data                                 # collecting data from api request
+        
+        # extracting images
+        try:
+            prodImages = data.pop('prodImages')                 
+        except:
+            return Response({"msg":"Please provide images"})        
+        
+        # extracting categories
+        try:
+            categories = data.pop('categories')                 
+        except:
+            ...
+        
+        # extracting tags, so that we can create product object easily and also can add these fields with product later
+        try:
+            tags = data.pop('tags')                 
+        except:
+            ...
+        
+                                     
 
         serializer = self.serializer_class(data=data, context={"images":prodImages,"categories":categories,"tags":tags})
         if serializer.is_valid():
