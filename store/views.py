@@ -30,13 +30,13 @@ class AddProduct(generics.CreateAPIView):
         try:
             categories = data.pop('categories')                 
         except:
-            categories = ''
+            categories = None
         
         # extracting tags, so that we can create product object easily and also can add these fields with product later
         try:
             tags = data.pop('tags')                 
         except:
-            tags = ''
+            tags = None
         
                                      
 
