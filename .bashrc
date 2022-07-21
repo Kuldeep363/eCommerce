@@ -1,1 +1,0 @@
-export("key",'django-insecure-=-9!d$9xcep46j7)%#+hgrjp773)e2vban*80=i)j2vf-c*qfz')
