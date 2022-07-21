@@ -43,7 +43,7 @@ class ProductSerializer(serializers.ModelSerializer):
                     catg = Category.objects.create(name=category)
                 product.categories.add(catg)
         except:
-            ...
+            pass
 
         
         # adding tags with product
@@ -57,7 +57,7 @@ class ProductSerializer(serializers.ModelSerializer):
                     t = Tag.objects.create(name=tag)
                 product.tags.add(t)
         except:
-            ...
+            pass
 
         # adding image with the product
         for img in images:

@@ -29,8 +29,8 @@ class AddProduct(generics.CreateAPIView):
         
         # extracting categories
         try:
-            categories = data.pop('categories')   
-            if categories == "":
+            categories = data.pop('categories')  
+            if categories[0] == "":
                 raise error              
         except:
             categories = None
@@ -38,7 +38,7 @@ class AddProduct(generics.CreateAPIView):
         # extracting tags, so that we can create product object easily and also can add these fields with product later
         try:
             tags = data.pop('tags')        
-            if tags == "":
+            if tags[0] == "":
                 raise error         
         except:
             tags = None
