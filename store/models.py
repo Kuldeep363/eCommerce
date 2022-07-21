@@ -38,7 +38,7 @@ class Images(models.Model):
     slug = models.SlugField(unique=True,blank=True)
 
     def save(self,*args,**kwargs):
-        self.slug = slugify(str(self.img)+ datetime.now().strftime("%d%m%Y%H%M%S"))
+        self.slug = slugify(str(self.img)+ str(int(datetime.now().strftime("%d%m%Y")) + int(datetime.now().strftime("%H%M%S"))))
         super(Images,self).save(*args,**kwargs)
 
     def __str__(self):
@@ -60,7 +60,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True,blank=True)
 
     def save(self,*args,**kwargs):
-        self.slug = slugify(str(self.name) + datetime.now().strftime("%d%m%Y%H%M%S"))
+        self.slug = slugify(str(self.name) + str(int(datetime.now().strftime("%d%m%Y")) + int(datetime.now().strftime("%H%M%S"))))
         super(Product,self).save(*args,**kwargs)
 
 
