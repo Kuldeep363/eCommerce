@@ -30,20 +30,16 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
-    
-
     def create(self,validated_data):
-        images = self.context['images']
-        categories = self.context['categories'][0].split(',')
-        tags = self.context['tags'][0].split(',')
-        print(f'c:{categories}')
-        print(f't:{tags}')
-        print(validated_data)
-        print(f'i:{images}')
+        images = self.context['images']                                 # getting images from context passed in AddProduct class of views.py file
+        categories = self.context['categories'][0].split(',')           # converting comma separated categories string into list of categories
+        tags = self.context['tags'][0].split(',')  
 
-        # return 1
-        product = Product(**validated_data)
+        product = Product(**validated_data)                             # creating product object
         product.save()
+
+        # adding categories with product
+        # if category is not in DB alrady, creating it and then adding with product
         for category in categories:
             try:
                 catg = Category.objects.get(name=category)
@@ -51,6 +47,8 @@ class ProductSerializer(serializers.ModelSerializer):
                 catg = Category.objects.create(name=category)
             product.categories.add(catg)
         
+        # adding tags with product
+        # if tag is not in DB alrady, creating it and then adding with product
         for tag in tags:
             try:
                 t = Tag.objects.get(name=tag)
@@ -58,6 +56,7 @@ class ProductSerializer(serializers.ModelSerializer):
                 t = Tag.objects.create(name=tag)
             product.tags.add(t)
 
+        # adding image with the product
         for img in images:
             imgObject = Images.objects.create(img = img)
             imgObject.slug += str(imgObject.id)

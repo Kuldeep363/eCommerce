@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views as vw
 
+
+# routes for api endpoints
 urlpatterns = [
     path('', vw.home,name='home'),
     path('api/products/', vw.RetrieveProducts.as_view(),name='allProductDetail'),

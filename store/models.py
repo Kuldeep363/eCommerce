@@ -8,12 +8,14 @@ class Category(models.Model):
     name = models.CharField(max_length=255,null=False,blank=False,default='category##',unique=True)
     slug = models.SlugField(unique=True,blank=True)
 
+    # overriding save method and creating slug for the category
     def save(self,*args,**kwargs):
         self.slug = slugify(self.name)
         super(Category,self).save(*args,**kwargs)
 
+    # ordering categories in db according to their name
     class Meta:
-        ordering = ('name',)
+        ordering = ['name',]
 
     def __str__(self):
         return self.name
@@ -23,12 +25,14 @@ class Tag(models.Model):
     name = models.CharField(max_length=255,null=False,blank=False,default='tag##',unique=True)
     slug = models.SlugField(unique=True,blank=True)
 
+    # overriding save method and creating slug for the tag
     def save(self,*args,**kwargs):
         self.slug = slugify(str(self.name))
         super(Tag,self).save(*args,**kwargs)
 
+    # ordering tags in db according to their name
     class Meta:
-        ordering = ('name',)
+        ordering = ['name',]
 
     def __str__(self):
         return self.name
@@ -37,8 +41,9 @@ class Images(models.Model):
     img = models.ImageField(upload_to='uploads/',blank=True,null=True)
     slug = models.SlugField(unique=True,blank=True)
 
+    # overriding save method and creating slug for the image
     def save(self,*args,**kwargs):
-        self.slug = slugify(str(self.img)+ str(int(datetime.now().strftime("%d%m%Y")) + int(datetime.now().strftime("%H%M%S"))))
+        self.slug = slugify(str(self.img)+ str(int(datetime.now().strftime("%d%m%Y")) + int(datetime.now().strftime("%H%M%S")))) # creating unique slug for image
         super(Images,self).save(*args,**kwargs)
 
     def __str__(self):
@@ -59,8 +64,9 @@ class Product(models.Model):
     dateAdded = models.DateTimeField(auto_now_add=True,blank=True,null=True)
     slug = models.SlugField(unique=True,blank=True)
 
+    # overriding save method and creating slug for the product
     def save(self,*args,**kwargs):
-        self.slug = slugify(str(self.name) + str(int(datetime.now().strftime("%d%m%Y")) + int(datetime.now().strftime("%H%M%S"))))
+        self.slug = slugify(str(self.name) + str(int(datetime.now().strftime("%d%m%Y")) + int(datetime.now().strftime("%H%M%S")))) # creating unique slug for image
         super(Product,self).save(*args,**kwargs)
 
 

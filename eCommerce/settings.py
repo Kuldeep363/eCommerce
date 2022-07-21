@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-from pickle import TRUE
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -73,8 +72,11 @@ WSGI_APPLICATION = 'eCommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'kuldeeprawat$eCommerce',
+        'USER': 'kuldeeprawat',
+        'PASSWORD': 'ZXCVbnm363@',
+        'HOST': 'kuldeeprawat.mysql.pythonanywhere-services.com',
     }
 }
 
