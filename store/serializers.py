@@ -32,29 +32,36 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def create(self,validated_data):
         images = self.context['images']                                 # getting images from context passed in AddProduct class of views.py file
-        categories = self.context['categories'][0].split(',')           # converting comma separated categories string into list of categories
-        tags = self.context['tags'][0].split(',')  
-
+        
         product = Product(**validated_data)                             # creating product object
         product.save()
 
         # adding categories with product
         # if category is not in DB alrady, creating it and then adding with product
-        for category in categories:
-            try:
-                catg = Category.objects.get(name=category)
-            except:
-                catg = Category.objects.create(name=category)
-            product.categories.add(catg)
+        try:
+            categories = self.context['categories'][0].split(',')           # converting comma separated categories string into list of categories
+            for category in categories:
+                try:
+                    catg = Category.objects.get(name=category)
+                except:
+                    catg = Category.objects.create(name=category)
+                product.categories.add(catg)
+        except:
+            ...
+
         
         # adding tags with product
         # if tag is not in DB alrady, creating it and then adding with product
-        for tag in tags:
-            try:
-                t = Tag.objects.get(name=tag)
-            except:
-                t = Tag.objects.create(name=tag)
-            product.tags.add(t)
+        try:
+            tags = self.context['tags'][0].split(',')  
+            for tag in tags:
+                try:
+                    t = Tag.objects.get(name=tag)
+                except:
+                    t = Tag.objects.create(name=tag)
+                product.tags.add(t)
+        except:
+            ...
 
         # adding image with the product
         for img in images:

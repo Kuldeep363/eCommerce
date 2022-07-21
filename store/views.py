@@ -4,7 +4,6 @@ from rest_framework import generics
 
 from .serializers import ProductSerializer
 from .models import Product
-from .serializers import ProductSerializer
 
 
 # index page
